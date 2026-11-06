@@ -1,5 +1,5 @@
 /* AI-Enhanced Car Pooling - frontend logic (plain JavaScript, talks to the Flask REST API) */
-const API = (location.protocol.startsWith("http") && location.port === "5000") ? "" : "http://127.0.0.1:5000";
+const API = (location.protocol === "file:" || (["localhost", "127.0.0.1"].includes(location.hostname) && location.port !== "5000")) ? "http://127.0.0.1:5000" : "";
 let token = localStorage.getItem("cp_token") || "";
 let user = JSON.parse(localStorage.getItem("cp_user") || "null");
 let lastSearch = null;
