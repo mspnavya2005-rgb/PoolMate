@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-Enhanced Car Pooling</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🚗 AI Car Pooling</div>
+    <div id="userBox" class="hidden"><span id="userName"></span> <span id="roleBadge" class="badge"></span>
+      <button id="logoutBtn" class="btn small ghost">Logout</button></div>
+  </header>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- ============ AUTH ============ -->
+  <main id="authView" class="container narrow">
+    <div class="card">
+      <div class="tabs"><button class="tab active" data-auth="login">Login</button><button class="tab" data-auth="register">Register</button></div>
+
+      <form id="loginForm">
+        <label>Email<input type="email" id="loginEmail" required></label>
+        <label>Password<input type="password" id="loginPassword" required></label>
+        <button class="btn" type="submit">Login</button>
+        <p class="hint">Demo (after <code>python seed_data.py</code>): driver1@demo.com / passenger1@demo.com — password <b>demo123</b></p>
+      </form>
+
+      <form id="registerForm" class="hidden">
+        <label>Full name<input id="regName" required></label>
+        <label>Email<input type="email" id="regEmail" required></label>
+        <label>Phone<input id="regPhone"></label>
+        <label>Password (min 6 chars)<input type="password" id="regPassword" minlength="6" required></label>
+        <label>I want to join as
+          <select id="regRole"><option value="passenger">Passenger (find rides)</option><option value="driver">Driver (offer rides)</option></select>
+        </label>
+        <fieldset id="regPrefs"><legend>Passenger preferences</legend>
+          <label class="check"><input type="checkbox" id="regAC"> I prefer an AC car</label>
+          <label class="check"><input type="checkbox" id="regNoSmoke" checked> No smoking</label>
+          <label class="check"><input type="checkbox" id="regMusic"> I like music in the car</label>
+        </fieldset>
+        <button class="btn" type="submit">Create account</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- ============ DRIVER ============ -->
+  <main id="driverView" class="container hidden">
+    <nav class="tabs main">
+      <button class="tab active" data-dtab="post">Post a Ride</button>
+      <button class="tab" data-dtab="rides">My Rides Dashboard</button>
+      <button class="tab" data-dtab="dhistory">Ride History</button>
+    </nav>
+
+    <section id="dtab-post" class="card">
+      <h2>Offer a ride</h2>
+      <form id="rideForm" class="grid">
+        <label>Pickup<select id="rPickup" class="loc" required></select></label>
+        <label>Destination<select id="rDest" class="loc" required></select></label>
+        <label>Departure<input type="datetime-local" id="rTime" required></label>
+        <label>Seats (1-6)<input type="number" id="rSeats" min="1" max="6" value="3" required></label>
+        <label>Price per seat (₹)<input type="number" id="rPrice" min="0" value="50" required></label>
+        <label>Vehicle<input id="rVehicle" placeholder="e.g. Honda City"></label>
+        <label class="check"><input type="checkbox" id="rAC" checked> AC</label>
+        <label class="check"><input type="checkbox" id="rSmoke"> Smoking allowed</label>
+        <label class="check"><input type="checkbox" id="rMusic" checked> Music</label>
+        <button class="btn full" type="submit">Post ride</button>
+      </form>
+    </section>
+
+    <section id="dtab-rides" class="hidden"><div id="driverRides"></div></section>
+    <section id="dtab-dhistory" class="hidden"><div id="driverHistory"></div></section>
+  </main>
+
+  <!-- ============ PASSENGER ============ -->
+  <main id="passengerView" class="container hidden">
+    <nav class="tabs main">
+      <button class="tab active" data-ptab="search">Find Rides</button>
+      <button class="tab" data-ptab="bookings">My Bookings &amp; Schedule</button>
+      <button class="tab" data-ptab="phistory">Ride History</button>
+    </nav>
+
+    <section id="ptab-search">
+      <div class="card">
+        <h2>Search rides</h2>
+        <form id="searchForm" class="grid">
+          <label>Pickup<select id="sPickup" class="loc" required></select></label>
+          <label>Destination<select id="sDest" class="loc" required></select></label>
+          <label>Date<input type="date" id="sDate"></label>
+          <label>Preferred time<input type="time" id="sTime" value="09:00"></label>
+          <label>Seats needed<input type="number" id="sSeats" min="1" max="6" value="1"></label>
+          <fieldset class="full"><legend>My preferences (saved to profile)</legend>
+            <label class="check"><input type="checkbox" id="sAC"> AC</label>
+            <label class="check"><input type="checkbox" id="sNoSmoke"> No smoking</label>
+            <label class="check"><input type="checkbox" id="sMusic"> Music</label>
+          </fieldset>
+          <button class="btn full" type="submit">Find best rides (ML)</button>
+        </form>
+      </div>
+      <div id="aiRecommend" class="card ai hidden"></div>
+      <div id="searchResults"></div>
+    </section>
+
+    <section id="ptab-bookings" class="hidden"><div id="myBookings"></div></section>
+    <section id="ptab-phistory" class="hidden"><div id="passengerHistory"></div></section>
+  </main>
+
+  <footer class="footer">AI-Enhanced Car Pooling • Flask + KNN (scikit-learn) + Generative AI</footer>
+  <script src="app.js"></script>
+</body>
+</html>
