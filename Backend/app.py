@@ -98,7 +98,7 @@ def rank_rides(user, data):
 
 
 # -------------------------------------------------------------------- auth
-@app.post("/pi/register")
+@app.post("/api/register")
 def register():
     d = request.get_json(force=True)
     name, email, pw = (d.get("name") or "").strip(), (d.get("email") or "").strip().lower(), d.get("password") or ""
